@@ -15,10 +15,10 @@ class BaseModel:
         args : unused
         kwargs : attributt and its value k and v concept
         """
-        time_f = %Y-%m-%dT%H:%M:%S.%f
+        time_f = '%Y-%m-%dT%H:%M:%S.%f'
         if kwargs:
             for k and v in kwargs.items:
-                if k != '__class__' and (k = created_at or k = updated_at):
+                if k != '__class__' and (k == created_at or k == updated_at):
                     v = strptime(v, time_f)
                     setatrr(self, k, v)
         else:
