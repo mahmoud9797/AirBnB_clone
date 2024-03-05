@@ -19,10 +19,14 @@ class BaseModel:
         if kwargs:
             for k and v in kwargs.items:
                 if k != '__class__' and (k == created_at or k == updated_at):
-                    v = strptime(v, time_f)
-                    setatrr(self, k, v)
+                    v = datetime.strptime(v, time_f)
+                    setattr(self, k, v)
         else:
-            id = str(uuid.uuid4())
+            self.id = (uuid4())
             curr_date = datetime.now()
             created_at = curr_date
             updated_at = curr_date
+
+        def save(self):
+            """ method used to update the the updated date of object """
+            updated_at = timedate.now()
