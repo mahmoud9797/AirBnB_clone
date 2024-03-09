@@ -14,23 +14,24 @@ class BaseModel:
         args: unused
         kwargs: attribute and its value k, v concept
         """
+        self.id = str(uuid4())
+        curr_date = datetime.today()
+        self.created_at = curr_date
+        self.updated_at = curr_date
         time_f = '%Y-%m-%dT%H:%M:%S.%f'
         if kwargs:
             for k, v in kwargs.items():
                 if k != '__class__':
                     if (k == 'created_at' or k == 'updated_at'):
                         v = datetime.strptime(v, time_f)
-                    setattr(self, k, v)
+                    else:
+                        setattr(self, k, v)
         else:
-            self.id = str(uuid4())
-            curr_date = datetime.now()
-            self.created_at = curr_date
-            self.updated_at = curr_date
             models.storage.new(self)
 
     def save(self):
         """ method used to update the updated date of the object """
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.today()
         models.storage.save()
 
     def __str__(self):
