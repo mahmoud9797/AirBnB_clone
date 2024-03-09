@@ -1,53 +1,51 @@
 #!/usr/bin/python3
-""" Basmodel module for whole the program """
-from datetime import datetime
-from uuid import uuid4
+"""Defines the BaseModel class."""
 import models
+from uuid import uuid4
+from datetime import datetime
 
 
 class BaseModel:
-    """ Base model class represents the parent class of the HBNB project """
+    """Represents the BaseModel of the HBnB project."""
 
     def __init__(self, *args, **kwargs):
+        """Initialize a new BaseModel.
+
+        Args:
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
         """
-        constructor
-        args: unused
-        kwargs: attribute and its value k, v concept
-        """
+        timeform = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
-        curr_date = datetime.today()
-        self.created_at = curr_date
-        self.updated_at = curr_date
-        time_f = '%Y-%m-%dT%H:%M:%S.%f'
-        if kwargs:
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
+        if len(kwargs) != 0:
             for k, v in kwargs.items():
-                if k != '__class__':
-                    if (k == 'created_at' or k == 'updated_at'):
-                        v = datetime.strptime(v, time_f)
-                    else:
-                        setattr(self, k, v)
+                if k == "created_at" or k == "updated_at":
+                    self.__dict__[k] = datetime.strptime(v, timeform)
+                else:
+                    self.__dict__[k] = v
         else:
             models.storage.new(self)
 
     def save(self):
-        """ method used to update the updated date of the object """
+        """Update updated_at with the current datetime."""
         self.updated_at = datetime.today()
         models.storage.save()
 
-    def __str__(self):
-        """
-        return the user-readable string for the name of the class
-        and its unique id
-        and a dictionary containing all attributes
-        """
-        form_at = "[{}] ({}) {}"
-        cl_name = self.__class__.__name__
-        return form_at.format(cl_name, self.id, self.__dict__)
-
     def to_dict(self):
-        """ return dictionary representation of the object """
-        dic_t = dict(self.__dict__)
-        dic_t["__class__"] = self.__class__.__name__
-        dic_t["created_at"] = self.created_at.isoformat()
-        dic_t["updated_at"] = self.updated_at.isoformat()
-        return dic_t
+        """Return the dictionary of the BaseModel instance.
+
+        Includes the key/value pair __class__ representing
+        the class name of the object.
+        """
+        rdict = self.__dict__.copy()
+        rdict["created_at"] = self.created_at.isoformat()
+        rdict["updated_at"] = self.updated_at.isoformat()
+        rdict["__class__"] = self.__class__.__name__
+        return rdict
+
+    def __str__(self):
+        """Return the print/str representation of the BaseModel instance."""
+        clname = self.__class__.__name__
+        return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
