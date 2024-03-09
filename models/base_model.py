@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Basmodel module for whole the program """
-
 from datetime import datetime
 from uuid import uuid4
+import models
 
 
 class BaseModel:
@@ -26,10 +26,12 @@ class BaseModel:
             curr_date = datetime.now()
             self.created_at = curr_date
             self.updated_at = curr_date
+            models.storage.new(self)
 
     def save(self):
         """ method used to update the updated date of the object """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def __str__(self):
         """
