@@ -50,6 +50,7 @@ class HBNBCommand(cmd.Cmd):
             new_obj = eval(clas_name)()
             print(new_obj.id)
             storage.save()
+
     def do_show(self, arg):
         """ show info about an object based on class name & id"""
         if not arg:
@@ -73,6 +74,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
         print(obj_s[key])
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
