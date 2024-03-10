@@ -5,7 +5,7 @@ import os.path
 from models.base_model import BaseModel
 import json
 from models.place import Place
-`
+
 
 class FileStorage:
     """class contain methods which
