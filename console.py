@@ -96,6 +96,21 @@ class HBNBCommand(cmd.Cmd):
             return
         del obj_s[k]
         storage.save()
+    
+    def do_all(self, arg):
+        """ print a list of all objects based or not class"""
+        args_l = arg.split()
+        if len(args_l) > 0 and args_l[0] not in HBNBCommand.__classes_dict:
+            print("** class doesn't exist **")
+        else:
+            obj_s = storage.all()
+            store_l = []
+            for obj in obj_s.values():
+                if len(args_l) > 0 and args_l[0] == obj.__class__.__name__:
+                    store_l.append(obj.__str__())
+                elif len(args_l) == 0:
+                    store_l.append(obj.__str__())
+            print(store_l)
 
 
 if __name__ == '__main__':
