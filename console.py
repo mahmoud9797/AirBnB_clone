@@ -87,6 +87,7 @@ class HBNBCommand(cmd.Cmd):
         obj_s = storage.all()
         if k not in obj_s:
             print("** no instance found **")
+            return
         del obj_s[k]
         storage.save()
 
