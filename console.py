@@ -55,25 +55,40 @@ class HBNBCommand(cmd.Cmd):
         """ show info about an object based on class name & id"""
         if not arg:
             print("** class name missing **")
-            return
 
         args_l = arg.split()
         class_name = args_l[0].strip()
-        if class_name not in self.__classes_dict:
+        if class_name not in HBNBCommand.__classes_dict:
             print("** class doesn't exist **")
-            return
 
         if len(args_l) < 2:
             print("** instance id missing **")
-            return
 
         obj_id = args_l[1].strip()
-        key = "{}.{}".format(class_name, obj_id)
+        k = "{}.{}".format(class_name, obj_id)
         obj_s = storage.all()
-        if key not in obj_s:
+        if k not in obj_s:
             print("** no instance found **")
             return
-        print(obj_s[key])
+        print(obj_s[k])
+
+    def do_destroy(self, arg):
+        """ command used to delete object based on class and id """
+        if arg == "":
+            print("** class name missing **")
+        args_l = arg.split()
+        clas_name = args_l[0].strip()
+        if clas_name not in HBNBCommand.__classes_dict:
+            print("** class doesn't exist **")
+        if len(args_l) < 2:
+            print("** instance id missing **")
+        obj_id = args_l[1].strip()
+        k = "{}.{}".format(clas_name, obj_id)
+        obj_s = storage.all()
+        if k not in obj_s:
+            print("** no instance found **")
+        del obj_s[k]
+        storage.save()
 
 
 if __name__ == '__main__':
