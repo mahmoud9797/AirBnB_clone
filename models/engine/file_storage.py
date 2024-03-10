@@ -4,8 +4,7 @@ deserializes JSON file to instances """
 import os.path
 from models.base_model import BaseModel
 import json
-from models.place import Place
-from models.amenity import Amenity
+from models.user import User
 
 
 class FileStorage:
