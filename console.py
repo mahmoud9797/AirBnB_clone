@@ -55,14 +55,17 @@ class HBNBCommand(cmd.Cmd):
         """ show info about an object based on class name & id"""
         if not arg:
             print("** class name missing **")
+            return
 
         args_l = arg.split()
         class_name = args_l[0].strip()
         if class_name not in HBNBCommand.__classes_dict:
             print("** class doesn't exist **")
+            return
 
         if len(args_l) < 2:
             print("** instance id missing **")
+            return
 
         obj_id = args_l[1].strip()
         k = "{}.{}".format(class_name, obj_id)
@@ -76,12 +79,15 @@ class HBNBCommand(cmd.Cmd):
         """ command used to delete object based on class and id """
         if arg == "":
             print("** class name missing **")
+            return
         args_l = arg.split()
         clas_name = args_l[0].strip()
         if clas_name not in HBNBCommand.__classes_dict:
             print("** class doesn't exist **")
+            return
         if len(args_l) < 2:
             print("** instance id missing **")
+            return
         obj_id = args_l[1].strip()
         k = "{}.{}".format(clas_name, obj_id)
         obj_s = storage.all()
