@@ -174,7 +174,7 @@ class HBNBCommand(cmd.Cmd):
         if len(argl) == 0:
             print("** class name missing **")
             return False
-        if argl[0] not in HBNBCommand.__classes:
+        if argl[0] not in HBNBCommand.__classes_dict:
             print("** class doesn't exist **")
             return False
         if len(argl) == 1:
