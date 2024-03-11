@@ -31,6 +31,7 @@ def parse(arg):
         retl.append(curly_braces.group())
         return retl
 
+
 class HBNBCommand(cmd.Cmd):
     """ class for Airbnb  console """
     prompt = "(hbnb)"
@@ -46,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ do nothing if the input is empty line or enter """
         pass
-     
+
     def default(self, arg):
         """Default behavior for cmd module when input is invalid"""
         argdict = {
@@ -136,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
             return
         del obj_s[k]
         storage.save()
-    
+
     def do_all(self, arg):
         """ print a list of all objects based or not class"""
         args_l = arg.split()
@@ -151,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
                 elif len(args_l) == 0:
                     store_l.append(obj.__str__())
             print(store_l)
-    
+
     def do_count(self, arg):
         """Usage: count <class> or <class>.count()
         Retrieve the number of instances of a given class."""
@@ -164,9 +165,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Usage: update <class> <id> <attribute_name> <attribute_value> or
-       <class>.update(<id>, <attribute_name>, <attribute_value>) or
-       <class>.update(<id>, <dictionary>)
-        Update a class instance of a given id by adding or updating
         a given attribute key/value pair or dictionary."""
         argl = parse(arg)
         objdict = storage.all()
@@ -210,7 +208,6 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     obj.__dict__[k] = v
         storage.save()
-
 
 
 if __name__ == '__main__':
