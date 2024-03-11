@@ -146,40 +146,40 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def do_update(self, arg):
-    """Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)"""
-    args = arg.split()
-    query_key = ''
+        """Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)"""
+        args = arg.split()
+        query_key = ''
 
-    if len(args) == 0:
-        print("** class name missing **")
-        return
-    class_name = args[0]
-    if class_name not in self.collection_keys:
-        print("** class doesn't exist **")
-        return
-    if len(args) == 1:
-        print("** instance id missing **")
-        return
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name not in self.collection_keys:
+            print("** class doesn't exist **")
+            return
+        if len(args) == 1:
+            print("** instance id missing **")
+            return
 
-    instance_id = args[1]
-    query_key = f"{class_name}.{instance_id}"
-    obj_dict = models.storage.all()
-    if query_key not in obj_dict.keys():
-        print("** no instance found **")
-        return
+        instance_id = args[1]
+        query_key = f"{class_name}.{instance_id}"
+        obj_dict = models.storage.all()
+        if query_key not in obj_dict.keys():
+            print("** no instance found **")
+            return
 
-    if len(args) == 2:
-        print('** attribute name missing **')
-        return
-    if len(args) == 3:
-        print('** value missing **')
-        return
+        if len(args) == 2:
+            print('** attribute name missing **')
+            return
+        if len(args) == 3:
+            print('** value missing **')
+            return
 
-    attribute_name = args[2]
-    attribute_value = args[3]
-    setattr(obj_dict[query_key], attribute_name, attribute_value)
+        attribute_name = args[2]
+        attribute_value = args[3]
+        setattr(obj_dict[query_key], attribute_name, attribute_value)
 
-    obj_dict[query_key].save()
+        obj_dict[query_key].save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
