@@ -14,24 +14,6 @@ import re
 from shlex import split
 
 
-def parse(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_braces is None:
-        if brackets is None:
-            return [i.strip(",") for i in split(arg)]
-        else:
-            lexer = split(arg[:brackets.span()[0]])
-            retl = [i.strip(",") for i in lexer]
-            retl.append(brackets.group())
-            return retl
-    else:
-        lexer = split(arg[:curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
-        retl.append(curly_braces.group())
-        return retl
-
-
 class HBNBCommand(cmd.Cmd):
     """ class for Airbnb  console """
     prompt = "(hbnb)"
@@ -164,51 +146,40 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def do_update(self, arg):
-        """Usage: update <class> <id> <attribute_name> <attribute_value> or
-        a given attribute key/value pair or dictionary."""
-        argl = parse(arg)
-        objdict = storage.all()
+    """Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)"""
+    args = arg.split()
+    query_key = ''
 
-        if len(argl) == 0:
-            print("** class name missing **")
-            return False
-        if argl[0] not in HBNBCommand.__classes_dict:
-            print("** class doesn't exist **")
-            return False
-        if len(argl) == 1:
-            print("** instance id missing **")
-            return False
-        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
-            print("** no instance found **")
-            return False
-        if len(argl) == 2:
-            print("** attribute name missing **")
-            return False
-        if len(argl) == 3:
-            try:
-                type(eval(argl[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
+    if len(args) == 0:
+        print("** class name missing **")
+        return
+    class_name = args[0]
+    if class_name not in self.collection_keys:
+        print("** class doesn't exist **")
+        return
+    if len(args) == 1:
+        print("** instance id missing **")
+        return
 
-        if len(argl) == 4:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            if argl[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[argl[2]])
-                obj.__dict__[argl[2]] = valtype(argl[3])
-            else:
-                obj.__dict__[argl[2]] = argl[3]
-        elif type(eval(argl[2])) == dict:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            for k, v in eval(argl[2]).items():
-                if (k in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[k]) in {str, int, float}):
-                    valtype = type(obj.__class__.__dict__[k])
-                    obj.__dict__[k] = valtype(v)
-                else:
-                    obj.__dict__[k] = v
-        storage.save()
+    instance_id = args[1]
+    query_key = f"{class_name}.{instance_id}"
+    obj_dict = models.storage.all()
+    if query_key not in obj_dict.keys():
+        print("** no instance found **")
+        return
 
+    if len(args) == 2:
+        print('** attribute name missing **')
+        return
+    if len(args) == 3:
+        print('** value missing **')
+        return
+
+    attribute_name = args[2]
+    attribute_value = args[3]
+    setattr(obj_dict[query_key], attribute_name, attribute_value)
+
+    obj_dict[query_key].save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
