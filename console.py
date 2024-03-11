@@ -10,7 +10,8 @@ from models.city import City
 from models.state import State
 from models.amenity import Amenity
 from models.user import User
-
+import re
+from shlex import split
 
 class HBNBCommand(cmd.Cmd):
     """ class for Airbnb  console """
@@ -161,8 +162,6 @@ class HBNBCommand(cmd.Cmd):
             return
         attr_value = args_l[3].strip()
         obj = obj_s[k]
-        attr_type = type(getattr(obj, attr_name))
-        casted_v = attr_type(attr_value)
         setattr(obj, attr_name, casted_v)
         storage.save()
 
