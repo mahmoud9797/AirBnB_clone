@@ -11,7 +11,6 @@ from models.state import State
 from models.amenity import Amenity
 from models.user import User
 import re
-from shlex import split
 
 class HBNBCommand(cmd.Cmd):
     """ class for Airbnb  console """
