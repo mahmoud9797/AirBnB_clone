@@ -27,6 +27,27 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ do nothing if the input is empty line or enter """
         pass
+     
+    def default(self, arg):
+        """Default behavior for cmd module when input is invalid"""
+        argdict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+        match = re.search(r"\.", arg)
+        if match is not None:
+            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", argl[1])
+            if match is not None:
+                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in argdict.keys():
+                    call = "{} {}".format(argl[0], command[1])
+                    return argdict[command[0]](call)
+        print("*** Unknown syntax: {}".format(arg))
+        return False
 
     __classes_dict = {
             "BaseModel",
@@ -140,9 +161,6 @@ class HBNBCommand(cmd.Cmd):
             return
         attr_value = args_l[3].strip()
         obj = obj_s[k]
-        unchanged_attr = ["id", "created_at", "updated_at"]
-        if attr_name in unchanged_attr:
-            return
         attr_type = type(getattr(obj, attr_name))
         casted_v = attr_type(attr_value)
         setattr(obj, attr_name, casted_v)
