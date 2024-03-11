@@ -133,37 +133,35 @@ class HBNBCommand(cmd.Cmd):
                 elif len(args_l) == 0:
                     store_l.append(obj.__str__())
             print(store_l)
+    
+    def do_update(self, args):
+        """ Updates an instance based on the class name and id """
 
-    def do_update(self, arg):
-        """ set the attribute value based on class name id """
-        if arg == "":
+        if not args:
             print("** class name missing **")
             return
-        args_l = arg.split()
-        clas_name = args_l[0].strip()
-        if clas_name not in HBNBCommand.__classes_dict:
+
+        token = args.split()
+
+        if token[0] not in theClasses:
             print("** class doesn't exist **")
-            return
-        if len(args_l) < 2:
+        elif len(token) == 1:
             print("** instance id missing **")
-            return
-        obj_id = args_l[1].strip()
-        obj_s = storage.all()
-        k = "{}.{}".format(clas_name, obj_id)
-        if k not in obj_s:
+        else:
+            all_objs = storage.all()
+            for key, val in all_objs.items():
+                ob_name = val.__class__.__name__
+                ob_id = val.id
+                if ob_name == token[0] and ob_id == token[1].strip('"'):
+                    if len(token) == 2:
+                        print("** attribute name missing **")
+                    elif len(token) == 3:
+                        print("** value missing **")
+                    else:
+                        setattr(val, token[2], token[3])
+                        storage.save()
+                    return
             print("** no instance found **")
-            return
-        if len(args_l) < 3:
-            print("** attribute name missing **")
-            return
-        attr_name = args_l[2].strip()
-        if len(args_l) < 4:
-            print("** value missing **")
-            return
-        attr_value = args_l[3].strip()
-        obj = obj_s[k]
-        setattr(obj, attr_name, casted_v)
-        storage.save()
 
 
 if __name__ == '__main__':
